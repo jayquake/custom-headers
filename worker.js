@@ -21,11 +21,13 @@ const REQUIRED_HEADERS = [
 ];
 
 /**
- * Main request handler
+ * Main request handler - Modern Workers format
  */
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request);
+  }
+};
 
 /**
  * Handle incoming requests
@@ -44,7 +46,7 @@ async function handleRequest(request) {
   
   // If any headers are missing, return 403
   if (missingHeaders.length > 0) {
-    return create403Response(missingHeaders);
+    return create403Response(missingHeaders, request);
   }
   
   // All headers present - proxy to GitHub Pages
@@ -54,9 +56,10 @@ async function handleRequest(request) {
 /**
  * Create a 403 Forbidden response
  * @param {Array<string>} missingHeaders - List of missing headers
+ * @param {Request} request - The incoming request
  * @returns {Response} - 403 response with error page
  */
-function create403Response(missingHeaders) {
+function create403Response(missingHeaders, request) {
   const errorHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
