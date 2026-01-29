@@ -13,12 +13,12 @@
 // Configuration
 const GITHUB_PAGES_URL = 'https://jayquake.github.io/custom-headers';
 
-// Required headers (case-insensitive)
-const REQUIRED_HEADERS = [
-  'signature-input',
-  'signature',
-  'signature-agent'
-];
+// Required headers with expected values
+const REQUIRED_HEADERS = {
+  'signature-input': 'This',
+  'signature': 'Should',
+  'signature-agent': 'Work'
+};
 
 /**
  * Main request handler - Modern Workers format
@@ -36,20 +36,24 @@ export default {
  */
 async function handleRequest(request) {
   // Validate required headers
-  const missingHeaders = [];
+  const invalidHeaders = [];
   
-  for (const header of REQUIRED_HEADERS) {
-    if (!request.headers.get(header)) {
-      missingHeaders.push(header);
+  for (const [headerName, expectedValue] of Object.entries(REQUIRED_HEADERS)) {
+    const actualValue = request.headers.get(headerName);
+    
+    if (!actualValue) {
+      invalidHeaders.push(`${headerName} (missing)`);
+    } else if (actualValue !== expectedValue) {
+      invalidHeaders.push(`${headerName} (invalid value)`);
     }
   }
   
-  // If any headers are missing, return 403
-  if (missingHeaders.length > 0) {
-    return create403Response(missingHeaders, request);
+  // If any headers are missing or invalid, return 403
+  if (invalidHeaders.length > 0) {
+    return create403Response(invalidHeaders, request);
   }
   
-  // All headers present - proxy to GitHub Pages
+  // All headers valid - proxy to GitHub Pages
   return proxyToGitHubPages(request);
 }
 
@@ -262,14 +266,18 @@ function create403Response(missingHeaders, request) {
         </p>
         
         <div class="info-box">
-            <h2>Missing Headers</h2>
-            ${REQUIRED_HEADERS.map(header => {
-              const isMissing = missingHeaders.includes(header);
+            <h2>Required Headers</h2>
+            ${Object.entries(REQUIRED_HEADERS).map(([header, expectedValue]) => {
+              const hasIssue = missingHeaders.some(h => h.includes(header));
+              const status = missingHeaders.find(h => h.includes(header)) || '';
+              const isMissing = status.includes('missing');
+              const isInvalid = status.includes('invalid');
+              
               return `
               <div class="header-item">
                   <span class="header-name">${header}</span>
                   <span class="header-status">
-                      ${isMissing ? '<span class="x-mark"></span> Missing' : 'Present'}
+                      ${hasIssue ? `<span class="x-mark"></span> ${isMissing ? 'Missing' : 'Invalid'}` : 'Valid'}
                   </span>
               </div>`;
             }).join('')}
@@ -300,7 +308,7 @@ function create403Response(missingHeaders, request) {
     statusText: 'Forbidden',
     headers: {
       'Content-Type': 'text/html;charset=UTF-8',
-      'X-Custom-Headers-Required': REQUIRED_HEADERS.join(', '),
+      'X-Custom-Headers-Required': Object.keys(REQUIRED_HEADERS).join(', '),
       'Cache-Control': 'no-cache, no-store, must-revalidate'
     }
   });
@@ -334,7 +342,7 @@ async function proxyToGitHubPages(request) {
     
     // Add custom header to indicate validation passed
     newResponse.headers.set('X-Custom-Headers-Validated', 'true');
-    newResponse.headers.set('X-Validated-Headers', REQUIRED_HEADERS.join(', '));
+    newResponse.headers.set('X-Validated-Headers', Object.keys(REQUIRED_HEADERS).join(', '));
     
     return newResponse;
     

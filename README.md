@@ -4,11 +4,13 @@ A testing tool for validating HTTP header requirements using Cloudflare Workers 
 
 ## Overview
 
-This project demonstrates server-side header validation for testing tools like accessFlow scanner that need to send Shopify Web Bot Auth headers:
+This project demonstrates server-side header validation for testing tools like accessFlow scanner. The worker validates that requests include three specific headers with exact values:
 
-- `Signature-Input`
-- `Signature`
-- `Signature-Agent`
+- **`Signature-Input`** must equal: `This`
+- **`Signature`** must equal: `Should`
+- **`Signature-Agent`** must equal: `Work`
+
+**Important**: The worker validates both header presence AND values. Requests with missing or incorrect header values will receive a 403 Forbidden error.
 
 ## Architecture
 
