@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Granted - Custom Headers Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 48px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        .success-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            color: #1f2937;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .info-box {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 32px;
+            text-align: left;
+        }
+        
+        .info-box h2 {
+            color: #374151;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .header-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .header-item:last-child {
+            border-bottom: none;
+        }
+        
+        .header-name {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .header-status {
+            color: #10b981;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .check-mark {
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .check-mark::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        
+        <h1>Access Granted!</h1>
+        <p class="subtitle">
+            Your request has been successfully authenticated with the required custom headers.
+        </p>
+        
+        <div class="info-box">
+            <h2>Validated Headers</h2>
+            <div class="header-item">
+                <span class="header-name">Signature-Input</span>
+                <span class="header-status">
+                    <span class="check-mark"></span>
+                    Present
+                </span>
+            </div>
+            <div class="header-item">
+                <span class="header-name">Signature</span>
+                <span class="header-status">
+                    <span class="check-mark"></span>
+                    Present
+                </span>
+            </div>
+            <div class="header-item">
+                <span class="header-name">Signature-Agent</span>
+                <span class="header-status">
+                    <span class="check-mark"></span>
+                    Present
+                </span>
+            </div>
+        </div>
+        
+        <div class="badge">
+            Custom Headers Testing Tool
+        </div>
+        
+        <div class="footer">
+            This page is protected by Cloudflare Workers header validation.<br>
+            All required headers were successfully verified.
+        </div>
+    </div>
+</body>
+</html>

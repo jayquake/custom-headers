@@ -1,0 +1,28 @@
+# Cloudflare Workers Configuration
+# Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "custom-headers-validator"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Worker will be deployed to: https://custom-headers-validator.YOUR_SUBDOMAIN.workers.dev
+# You can also configure a custom domain after deployment
+
+# Account ID (optional - wrangler will prompt if not set)
+# account_id = "your-account-id-here"
+
+# Routes (optional - for custom domains)
+# Uncomment and configure if you want to use a custom domain
+# routes = [
+#   { pattern = "example.com/*", zone_name = "example.com" }
+# ]
+
+# Environment variables (if needed)
+# [vars]
+# GITHUB_PAGES_URL = "https://your-username.github.io/custom-headers-main"
+
+# Deployment settings
+workers_dev = true  # Enable *.workers.dev subdomain
+
+# Limits (optional)
+# limits = { cpu_ms = 50 }
