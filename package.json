@@ -1,0 +1,28 @@
+{
+  "name": "custom-headers-accessibility-tests",
+  "version": "1.0.0",
+  "description": "Accessibility testing for custom headers tool using AccessFlow SDK",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "setup": "bash setup.sh",
+    "setup:windows": "setup.bat"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@acsbe/accessflow-sdk": "file:acsbe-accessflow-sdk-1.0.1.tgz"
+  },
+  "keywords": [
+    "accessibility",
+    "testing",
+    "playwright",
+    "accessflow",
+    "a11y",
+    "wcag"
+  ],
+  "author": "",
+  "license": "MIT"
+}

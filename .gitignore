@@ -31,3 +31,11 @@ logs/
 # Build output
 dist/
 build/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# AccessFlow SDK
+*.tgz
