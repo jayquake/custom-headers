@@ -24,6 +24,21 @@ jobs:
       - name: Install dependencies
         run: npm install
       
+      - name: Verify AccessFlow SDK package
+        run: |
+          if [ ! -f "./acsbe-accessflow-sdk-1.0.1.tgz" ]; then
+            echo "❌ ERROR: AccessFlow SDK package not found!"
+            echo "The file acsbe-accessflow-sdk-1.0.1.tgz is missing from the repository."
+            echo ""
+            echo "To fix this:"
+            echo "1. Ensure the SDK package is in the repository root"
+            echo "2. Verify it's not ignored by .gitignore"
+            echo "3. Commit and push the file: git add acsbe-accessflow-sdk-1.0.1.tgz && git commit -m 'Add SDK package' && git push"
+            exit 1
+          fi
+          echo "✅ AccessFlow SDK package found"
+          ls -lh acsbe-accessflow-sdk-1.0.1.tgz
+      
       - name: Install AccessFlow SDK
         run: npm install ./acsbe-accessflow-sdk-1.0.1.tgz
       
