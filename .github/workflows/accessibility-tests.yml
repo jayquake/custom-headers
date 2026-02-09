@@ -50,10 +50,35 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
       
+      - name: Install Wrangler
+        run: npm install -g wrangler
+      
+      - name: Start Cloudflare Worker
+        run: |
+          wrangler dev --port 8787 &
+          echo $! > wrangler.pid
+          # Wait for worker to be ready
+          echo "Waiting for worker to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8787 > /dev/null 2>&1; then
+              echo "✅ Worker is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+      
       - name: Run accessibility tests
         env:
           ACCESSFLOW_SDK_API_KEY: ${{ secrets.ACCESSFLOW_SDK_API_KEY }}
         run: npm test
+      
+      - name: Stop Cloudflare Worker
+        if: always()
+        run: |
+          if [ -f wrangler.pid ]; then
+            kill $(cat wrangler.pid) || true
+          fi
       
       - name: Upload test results
         if: always()

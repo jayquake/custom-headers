@@ -33,6 +33,13 @@ export default defineConfig({
     // Base URL for your application
     baseURL: 'http://localhost:8787',
     
+    // Custom headers required by the Cloudflare Worker
+    extraHTTPHeaders: {
+      'Signature-Input': 'This',
+      'Signature': 'Should',
+      'Signature-Agent': 'Work'
+    },
+    
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
     
